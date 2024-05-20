@@ -155,7 +155,7 @@ function getObject(id)
     end
 end
 
-function cektree()
+local function cektree()
     if GetWorld() == nil then return end
     
     if CheckEmptyTile() == 0 and gscan(CONFIG.World_setting.seed_id) == 0 then
@@ -194,7 +194,7 @@ function cektree()
     end
 end
 
-function CheckRemote()
+local function CheckRemote()
     if GetWorld() == nil then return end
     
     if findItem(5640) < 1 or EMPTY_MAGPLANT then
@@ -213,8 +213,7 @@ function CheckRemote()
     return findItem(5640) >= 1
 end
 
-function htmray()
-
+local function htmray()
     if checkseed() > 0 then
         if CONFIG.World_setting.harvest_type == "up" then
             for y = 0, 199 do
@@ -254,7 +253,7 @@ function htmray()
                         LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^Ptht Count = `2"..PTHT_COUNT.."/"..TOTAL_PTHT)
 end
 
-function plantfast()
+local function plantfast()
     LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `2There is "..CheckEmptyTile().." Empty Tile Left")
     Sleep(100)
 
@@ -569,13 +568,27 @@ for _, id in pairs(tabel_uid) do
     end
 end
 
-if match_found then
+-- Fungsi untuk memeriksa apakah batas waktu skrip telah tercapai
+local function isScriptTimeLimitReached()
+    local currentTime = os.time()  -- Waktu saat ini
+    local scriptEndTime = os.time({year=os.date("*t").year, month=os.date("*t").month, day=os.date("*t").day + 1, hour=0, min=0, sec=0})  -- Waktu akhir skrip (akhir hari berikutnya)
+    return currentTime >= scriptEndTime
+end
+
+    local currentTime = os.time()  -- Waktu saat ini
+    local scriptEndTime = os.time({year=os.date("*t").year, month=os.date("*t").month, day=os.date("*t").day + 1, hour=0, min=0, sec=0})  -- Waktu akhir skrip (akhir hari berikutnya)
+    local remainingTime = scriptEndTime - currentTime  -- Sisa waktu hingga batas waktu skrip
+    local remainingHours = math.floor(remainingTime / 3600)
+    local remainingMinutes = math.floor((remainingTime % 3600) / 60)
+    local remainingSeconds = remainingTime % 60
+    local message = string.format("%02d Jam, %02d Menit, %02d Detik", remainingHours, remainingMinutes, remainingSeconds)
+
+
+local function mainScriptAction()
     ChangeValue("[C] Modfly", true)
     LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `^IDENTIFY PLAYER : " .. GetLocal().name)
     Sleep(1000)
-    LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `^CHECKING UID")
-    Sleep(3000)
-    LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `^UID TERDAFTAR")
+    LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `^TIME REMAINING : "..message)
     Sleep(1000)
     say("`2SC BETA PTHT UWS AUTO RECONNECT v2.0 BY `^MUFFINN STORE")
     Sleep(1000)
@@ -662,13 +675,12 @@ end
               end
            end
         end
+     end
 
+-- Cek apakah batas waktu skrip telah tercapai sebelum menjalankan fungsionalitas utama skrip
+if isScriptTimeLimitReached() then
+    LogToConsole("Batas waktu skrip telah tercapai. Skrip tidak dapat dijalankan.")
+    return  -- Keluar dari skrip
 else
-LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `^IDENTIFY PLAYER : " .. GetLocal().name)
-Sleep(1000)
-LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `^CHECKING UID")
-Sleep(3000)
-say("`4UID Not Found")
-Sleep(1000)
-LogToConsole("`0[`^MUFFINN`0-`^STORE`0] `4UID TIDAK TERDAFTAR KONTAK DISCORD MUFFINN_S")
+    mainScriptAction()
 end
