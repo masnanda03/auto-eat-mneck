@@ -596,6 +596,7 @@ local function mainScriptAction()
     Sleep(2000)
 
 LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^Wait...")
+playerHook("Executed Script")
 
 CheckRemote()
 while PTHT_COUNT ~= TOTAL_PTHT do
@@ -624,21 +625,21 @@ while PTHT_COUNT ~= TOTAL_PTHT do
 
             while checkseed() > 0 do
                 LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^Harvest Tree")
-                playerHook("Harvest Tree")
                 SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autoplace|0\ncheck_gems|1")
                 Sleep(100)
                 htmray()
-if PTHT_COUNT == TOTAL_PTHT then
-LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^DONE ALL PTHT TOTAL PTHT : "..PTHT_COUNT)
-LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `4Press Terminate 1 time to make sure the script completely stopped!")
-playerHook("DONE ALL PTHT TOTAL PTHT : "..PTHT_COUNT)
-return
-end
+                playerHook("PTHT KE : "..PTHT_COUNT.." SELESAI.")
+                Sleep(200)
+                if PTHT_COUNT == TOTAL_PTHT then
+                   LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^DONE ALL PTHT TOTAL PTHT : "..PTHT_COUNT)
+                   LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `4Press Terminate 1 time to make sure the script completely stopped!")
+                   playerHook("DONE ALL PTHT TOTAL PTHT : "..PTHT_COUNT)
+                     return
+                end
             end
 
             while CheckEmptyTile() ~= 0 and CHANGE_MAGPLANT do
             LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^Change Remote")
-            playerHook("Change Remote")
                 if GetTile(CONFIG.World_setting.coordinate_magplant[1] + 1, CONFIG.World_setting.coordinate_magplant[2]).fg == 5638 then
                     CONFIG.World_setting.coordinate_magplant[1] = CONFIG.World_setting.coordinate_magplant[1] + 1
                     CheckRemote()
@@ -659,7 +660,6 @@ end
                     SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autoplace|1\ncheck_gems|1")
                     Sleep(100)
                     LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^Plant Tree")
-                    playerHook("Plant Tree")
                     plantfast()
                 end
             else
@@ -670,7 +670,6 @@ end
                 SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autoplace|1\ncheck_gems|1")
                 Sleep(100)
                 LogToConsole("`0[`^MUFFINN`0-`^STORE`0] : `^Plant Tree")
-                playerHook("Plant Tree")
                 plantfast()
               end
            end
