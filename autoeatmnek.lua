@@ -213,7 +213,7 @@ local function CheckRemote()
     return findItem(5640) >= 1
 end
 
-local function htmray()
+function htmray()
     if checkseed() > 0 then
         if CONFIG.World_setting.harvest_type == "up" then
             for y = 0, 199 do
